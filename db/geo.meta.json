@@ -1,0 +1,32 @@
+{
+  "continents": [
+    {
+      "countries": [
+        {
+          "aliases": [
+            "PRC"
+          ],
+          "iso2": "CN",
+          "name": "China"
+        },
+        {
+          "aliases": [],
+          "iso2": "JP",
+          "name": "Japan"
+        }
+      ],
+      "name": "Asia"
+    },
+    {
+      "countries": [
+        {
+          "aliases": [],
+          "iso2": "ZA",
+          "name": "South Africa"
+        }
+      ],
+      "name": "Africa"
+    }
+  ],
+  "version": 1
+}

@@ -27,6 +27,11 @@ pub fn fetch_default_db() -> Result<GeoDb> {
     Ok(serde_json::from_str(&body)?)
 }
 
+pub fn load_embedded_geo() -> anyhow::Result<GeoDb> {
+    let s = include_str!(concat!(env!("CARGO_MANIFEST_DIR"), "/db/geo.json"));
+    Ok(serde_json::from_str(s)?)
+}
+
 impl GeoDb {
     pub fn resolve_enabled(
         &self,

@@ -1,3 +1,6 @@
+use anyhow::Result;
+use clap::Parser;
+
 mod cli;
 mod db;
 mod ipset;
@@ -5,7 +8,6 @@ mod state;
 mod systemd;
 mod ufw;
 
-use anyhow::Result;
 use cli::{Cli, Cmd};
 
 fn main() -> Result<()> {
@@ -38,7 +40,10 @@ fn main() -> Result<()> {
         Cmd::Sync => ugb_sync(),
         Cmd::ServiceInstall => systemd::install_units(),
         Cmd::ServiceUninstall => systemd::uninstall_units(),
-        Cmd::Completion { shell } => cli::print_completion(shell),
+        Cmd::Completion { shell } => {
+            cli::print_completion(shell);
+            Ok(())
+        }
     }
 }
 
