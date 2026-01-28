@@ -28,7 +28,10 @@ pub fn fetch_default_db() -> Result<GeoDb> {
 }
 
 impl GeoDb {
-    pub fn resolve_enabled(&self, enabled: &std::collections::BTreeSet<String>) -> Result<(Vec<String>, Vec<String>)> {
+    pub fn resolve_enabled(
+        &self,
+        enabled: &std::collections::BTreeSet<String>,
+    ) -> Result<(Vec<String>, Vec<String>)> {
         let mut v4 = Vec::new();
         let mut v6 = Vec::new();
 
@@ -61,5 +64,6 @@ impl GeoDb {
     }
 }
 
-fn norm(s: &str) -> String { s.trim().to_lowercase() }
-
+fn norm(s: &str) -> String {
+    s.trim().to_lowercase()
+}

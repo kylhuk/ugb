@@ -6,16 +6,21 @@ const TMR: &str = "/etc/systemd/system/ugb.timer";
 
 pub fn install_units() -> Result<()> {
     // oneshot service
-    fs::write(SVC, r#"[Unit]
+    fs::write(
+        SVC,
+        r#"[Unit]
 Description=UFW Geo Block sync
 
 [Service]
 Type=oneshot
 ExecStart=/usr/local/bin/ugb sync
-"#)?;
+"#,
+    )?;
 
     // timer: twice a day
-    fs::write(TMR, r#"[Unit]
+    fs::write(
+        TMR,
+        r#"[Unit]
 Description=Run ugb sync periodically
 
 [Timer]
@@ -25,7 +30,8 @@ Persistent=true
 
 [Install]
 WantedBy=timers.target
-"#)?;
+"#,
+    )?;
 
     run("systemctl", &["daemon-reload"])?;
     run("systemctl", &["enable", "--now", "ugb.timer"])?;
@@ -43,8 +49,12 @@ pub fn uninstall_units() -> Result<()> {
 fn run(cmd: &str, args: &[&str]) -> Result<()> {
     let out = Command::new(cmd).args(args).output()?;
     if !out.status.success() {
-        return Err(anyhow!("{} {:?} failed: {}", cmd, args, String::from_utf8_lossy(&out.stderr)));
+        return Err(anyhow!(
+            "{} {:?} failed: {}",
+            cmd,
+            args,
+            String::from_utf8_lossy(&out.stderr)
+        ));
     }
     Ok(())
 }
-

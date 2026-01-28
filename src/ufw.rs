@@ -13,7 +13,10 @@ pub fn ensure_hook_installed() -> Result<()> {
 pub fn reload() -> Result<()> {
     let out = Command::new("ufw").arg("reload").output()?;
     if !out.status.success() {
-        return Err(anyhow!("ufw reload failed: {}", String::from_utf8_lossy(&out.stderr)));
+        return Err(anyhow!(
+            "ufw reload failed: {}",
+            String::from_utf8_lossy(&out.stderr)
+        ));
     }
     Ok(())
 }
@@ -45,7 +48,9 @@ fn patch_file(path: &str, chain: &str, setname: &str, _v6: bool) -> Result<()> {
 }
 
 fn replace_block(content: &str, begin: &str, end: &str, block: &str) -> Result<String> {
-    let b = content.find(begin).ok_or_else(|| anyhow!("begin not found"))?;
+    let b = content
+        .find(begin)
+        .ok_or_else(|| anyhow!("begin not found"))?;
     let e = content.find(end).ok_or_else(|| anyhow!("end not found"))?;
     let e2 = e + end.len();
     Ok(format!("{}{}\n{}", &content[..b], block, &content[e2..]))
@@ -56,7 +61,10 @@ fn insert_after_chain(content: &str, chain: &str, block: &str) -> String {
     let needle = format!(":{chain} ");
     if let Some(pos) = content.find(&needle) {
         // insert after the chain declaration line end
-        let line_end = content[pos..].find('\n').map(|x| pos + x + 1).unwrap_or(content.len());
+        let line_end = content[pos..]
+            .find('\n')
+            .map(|x| pos + x + 1)
+            .unwrap_or(content.len());
         let mut out = String::new();
         out.push_str(&content[..line_end]);
         out.push_str(block);
@@ -67,4 +75,3 @@ fn insert_after_chain(content: &str, chain: &str, block: &str) -> String {
         format!("{content}\n{block}")
     }
 }
-

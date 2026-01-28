@@ -16,14 +16,18 @@ fn main() -> Result<()> {
             let mut st = state::load()?;
             st.enable(&region)?;
             state::save(&st)?;
-            if apply { return ugb_sync(); }
+            if apply {
+                return ugb_sync();
+            }
             Ok(())
         }
         Cmd::Remove { region, apply } => {
             let mut st = state::load()?;
             st.disable(&region)?;
             state::save(&st)?;
-            if apply { return ugb_sync(); }
+            if apply {
+                return ugb_sync();
+            }
             Ok(())
         }
         Cmd::List => {
@@ -59,4 +63,3 @@ fn ugb_sync() -> Result<()> {
     ufw::reload()?;
     Ok(())
 }
-
